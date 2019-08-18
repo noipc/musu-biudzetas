@@ -1,0 +1,11 @@
+sudo: required
+
+language: minimal
+
+services:
+  - docker
+
+before_install:
+  - set -e
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - set +e

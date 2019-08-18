@@ -1,0 +1,14 @@
+{% extends 'admin:admin/change_list.html' %}
+{% load i18n admin_urls static admin_list %}
+
+
+{% block object-tools-items %}
+  {% if user.is_superuser %}
+    <li>
+        <a href='import_csv/'>Užkrauti CSV duomenis</a>
+    </li>
+  {% endif %}
+  {{block.super}}
+
+{% endblock %}
+  

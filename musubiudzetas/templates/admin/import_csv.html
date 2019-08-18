@@ -1,0 +1,14 @@
+{% extends 'admin:admin/base.html' %} 
+
+{% block content %}
+    <div>
+        <form action="." method="POST" enctype="multipart/form-data">
+            {{ form.as_p }}
+            {% csrf_token %}
+
+                <button type="submit">Įkelti CSV</button>
+        </form>
+    </div>
+    <br />
+
+{% endblock %}
