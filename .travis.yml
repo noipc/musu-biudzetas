@@ -10,7 +10,7 @@ before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
   - docker build -t augis91/musu-biudzetas --build-arg GIT_COMMIT=${TRAVIS_COMMIT::8} .
   - docker push augis91/musu-biudzetas
-  - openssl aes-256-cbc -K $encrypted_9155bdf9ba58_key -iv $encrypted_9155bdf9ba58_iv -in deploy_mb_rsa.enc -out deploy_mb_rsa -d
+  - openssl aes-256-cbc -K $encrypted_9155bdf9ba58_key -iv $encrypted_9155bdf9ba58_iv -in deploy_mb_rsa.enc -out /tmp/deploy_mb_rsa -d
   - eval "$(ssh-agent -s)"
   - chmod 600 /tmp/deploy_mb_rsa
   - ssh-add /tmp/deploy_mb_rsa
