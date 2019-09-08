@@ -6,7 +6,7 @@ ENV PYTHONPROJECT 1
 RUN mkdir /srv/musubiudzetas
 WORKDIR /srv/musubiudzetas
 
-COPY requiremnets.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
