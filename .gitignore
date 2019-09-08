@@ -5,4 +5,5 @@ Scripts/
 tcl/
 /media/
 __pycache__
-.env
+/.env
+/lib/
