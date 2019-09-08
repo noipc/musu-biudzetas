@@ -4,4 +4,4 @@ all: pull deploy
 
 pull: git pull
 
-deploy: docker stack deploy musubiudzetai --compose-file docker-compose.yml
+deploy: docker stack deploy musubiudzetas --compose-file docker-compose.yml

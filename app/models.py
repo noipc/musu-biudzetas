@@ -109,17 +109,6 @@ class Municipality(CommonModel):
         verbose_name_plural =_("Savivaldybės")
         verbose_name =_("Savivaldybė")
 
-class Currency(CommonModel):
-    name = models.CharField(max_length=3, verbose_name=_("Valiutos trumpinys"))
-    
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural =_("Valiutos")
-        verbose_name = _("Valiuta")
-        ordering = ["name"]
-
 class Program(CommonModel):
     FUND_TYPE = (
         (1, "Valstybės finansavimas"),
@@ -150,20 +139,27 @@ class Entity(CommonModel):
         (3, "Likviduojamas"),
         (4, "Likviduotas")
     )
+    PUB_SUB_SECTORS = (
+        (1, "Vaikai"),
+        (2, "Jaunimas"),
+        (3, "Senjorai")
+    )
     name = models.CharField(max_length=300, verbose_name=_("Juridinio asmens pavadinimas"))
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=300)
     legal_id = models.CharField(max_length=50, unique=True, null=False, verbose_name=_("Įmonės kodas"))
     entity_type = models.ForeignKey(EntityType, on_delete=models.CASCADE, verbose_name=_("Juridinio asmens tipas"))
     entity_cat = models.ForeignKey(EntitySector, on_delete=models.CASCADE, verbose_name=_("Juridinio asmens sektorius"))
     pub_sector = models.ForeignKey(PublicSector, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Viešosios politikos sritis"))
+    pub_subsector = models.IntegerField(choices=PUB_SUB_SECTORS, null=True, blank=True, verbose_name=_("Viešosios politikos srities kategorija"), help_text=_("Vaikai, Jaunimas, Senjorai"))
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, verbose_name=_("Savivaldybė"))
     status = models.IntegerField(choices=ENTITY_STATUS, default=1, verbose_name=_("Juridinio asmens statusas"))
     start_date = models.DateField(null=True, blank=True, verbose_name=_("Juridinio asmens įkūrimo data"))
     end_date = models.DateField(null=True, blank=True, verbose_name=_("Juridinio asmens likvidavimo data"))
     is_funder = models.BooleanField(null=True, verbose_name=_("Finansuotojas"))
+    is_municipality = models.BooleanField(null=True, blank=True, default=0, verbose_name=_("Ar savivaldybės administracija?"))
+    is_ministry = models.BooleanField(null=True, blank=True, default=0, verbose_name=_("Ar ministerija?"))
     is_accountable = models.BooleanField(null=True, verbose_name=_("Ar teikia ataskaitas?"))
     accounts_url = models.URLField(max_length=300, null=True, blank=True, verbose_name=_("Finansinių ataskaitų šaltinis Registrų centre"))
-    program_participant = models.ManyToManyField(Program, blank=True, verbose_name=_("Programa"), help_text=_("Programa, iš kurios yra gaunamas finansavimas"))
     comments = models.TextField(null=True, blank=True, verbose_name=_("Pastabos"))
 
     def __str__(self):
@@ -195,22 +191,16 @@ class Budget(CommonModel):
     b_type = models.IntegerField(choices=BUDGET_TYPE, default = 1, verbose_name=_("Biudžeto tipas"))
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, blank=True, to_field='legal_id', verbose_name=_("Juridinis asmuo"))
     program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Programa"))
-    amount = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Suma"))
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name=_("Valiuta"))
+    amount = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Suma, EUR"))
     year = models.IntegerField(default=2015, verbose_name=_("Metai"))
 
-    def clean(self):
-        if self.b_type == 1 and self.entity is None:
-            raise ValidationError(_("Jeigu pasirinkote juridinio asmens biudžeto tipą, tai turi būti pasirinktas juridinis asmuo"))
-
-        if self.b_type == 2 and self.program is None:
-            raise ValidationError(_("Jeigu pasirinkote programos biudžeto tipą, tai turi būti pasirinkta programa"))
 
     def __str__(self):
         if self.b_type == 1:
             return str(self.year) + " " + self.entity.name
         else:
             return str(self.year) + " " + self.program.name
+
 
     class Meta:
         verbose_name_plural =_("Biudžetai")
