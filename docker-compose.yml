@@ -1,4 +1,6 @@
-services:
+varsion: "3.4"
+ 
+ services:
   postgres:
     image: postgres:10.5
     env_file:
