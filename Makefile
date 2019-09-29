@@ -2,6 +2,8 @@
 
 all: pull deploy
 
-pull: git pull
+pull: 
+	git pull
 
-deploy: docker stack deploy musubiudzetas --compose-file docker-compose.yml
+deploy: 
+	docker stack deploy musubiudzetas --compose-file docker-compose.yml
