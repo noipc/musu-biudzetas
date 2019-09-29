@@ -6,4 +6,4 @@ pull:
 	git pull
 
 deploy: 
-	docker stack deploy musubiudzetas --compose-file docker-compose.yml
+	docker stack deploy musu-biudzetas --compose-file docker-compose.yml
