@@ -15,7 +15,7 @@ services:
         condition: on-failure
 
   platform:
-    image: augis91/musubiudzetas
+    image: augis91/musu-biudzetas
     env_file:
       - .env
     healthcheck:
@@ -33,7 +33,6 @@ services:
     networks:
       - nginx_network
       - database_network
-      - datadog_network
     depends_on:
       - postgres
 
@@ -61,14 +60,10 @@ networks:
     driver: overlay
   database_network:
     driver: overlay
-  redis_network:
-    driver: overlay
-  datadog_network:
-    driver: overlay
+
 
 volumes:
   database_volume:
   static_volume:
   media_volume:
-  redis_volume:
   worker_cache_volume:
