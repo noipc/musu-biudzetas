@@ -12,15 +12,15 @@ before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
   - docker build -t augis91/musu-biudzetas --build-arg GIT_COMMIT=${TRAVIS_COMMIT::8} .
   - docker push augis91/musu-biudzetas
-  - openssl aes-256-cbc -K $encrypted_4fbf55944ba9_key -iv $encrypted_4fbf55944ba9_iv -in deploy_mb_rsa.enc -out deploy_mb_rsa -d
+  - openssl aes-256-cbc -K $encrypted_4fbf55944ba9_key -iv $encrypted_4fbf55944ba9_iv -in deploy_mb_rsa.enc -out /temp/deploy_mb_rsa -d
   - eval "$(ssh-agent -s)"
-  - chmod 600 deploy_mb_rsa
-  - ssh-add deploy_mb_rsa
+  - chmod 600 /temp/deploy_mb_rsa
+  - ssh-add /temp/deploy_mb_rsa
   - set +e
 
 after_success:
   - set -e
-  - ssh -o "StrictHostKeyChecking no" -i deploy_mb_rsa $REMOTE_USER@$REMOTE_HOST 'bash -s' < config/deploy-travis.sh
+  - ssh -o "StrictHostKeyChecking no" -i /temp/deploy_mb_rsa $REMOTE_USER@$REMOTE_HOST 'bash -s' < config/deploy-travis.sh
   - set +e
 
 branches:
