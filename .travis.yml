@@ -20,7 +20,7 @@ before_install:
 
 after_success:
   - set -e
-  - ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_mb_rsa $REMOTE_USER@$REMOTE_HOST 'cd $REMOTEAPPDIR2/config && ./deploy-travis.sh'
+  - ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_mb_rsa $REMOTE_USER@$REMOTE_HOST 'cd musu-biudzetas/config && ./deploy-travis.sh'
   - set +e
 
 branches:
