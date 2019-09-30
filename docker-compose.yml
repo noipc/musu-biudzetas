@@ -14,7 +14,7 @@ services:
       restart_policy:
         condition: on-failure
 
-  platform:
+  musubiudzetas:
     image: augis91/musu-biudzetas
     env_file:
       - .env
@@ -55,15 +55,15 @@ services:
         restart_policy:
           condition: on-failure
 
-  networks:
-    nginx_network:
-      driver: overlay
-    database_network:
-      driver: overlay
+networks:
+  nginx_network:
+    driver: overlay
+  database_network:
+    driver: overlay
 
 
-  volumes:
-    database_volume:
-    static_volume:
-    media_volume:
-    worker_cache_volume:
+volumes:
+  database_volume:
+  static_volume:
+  media_volume:
+  worker_cache_volume:
