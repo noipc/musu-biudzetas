@@ -1,5 +1,4 @@
 version: "3.7"
-
 services:
   postgres:
     image: postgres:10.5
@@ -60,3 +59,10 @@ networks:
     driver: overlay
   database_network:
     driver: overlay
+
+
+volumes:
+  database_volume:
+  static_volume:
+  media_volume:
+  worker_cache_volume:
