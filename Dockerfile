@@ -14,4 +14,4 @@ COPY . .
 ARG GIT_COMMIT
 ENV GIT_COMMIT=${GIT_COMMIT}
 
-CMD ["bin/sh", "config/start.sh"]
+CMD ["/bin/sh", "config/start.sh"]
