@@ -4,8 +4,8 @@ services:
     image: postgres:10.5
     env_file:
       - .env
-    networks:
-      - database_network
+    # networks:
+    #   - database_network
     volumes:
       - database_volume:/var/lib/postgresql/data
     deploy:
@@ -29,9 +29,9 @@ services:
     volumes:
       - static_volume:/srv/musubiudzetas/static
       - media_volume:/srv/musubiudzetas/media
-    networks:
-      - nginx_network
-      - database_network
+    # networks:
+    #   - nginx_network
+    #   - database_network
     depends_on:
       - postgres
 
@@ -47,18 +47,18 @@ services:
       - media_volume:/srv/musubiudzetas/media
     depends_on:
       - musubiudzetas
-    networks:
-      - nginx_network
+    # networks:
+    #  - nginx_network
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
 
-networks:
-  nginx_network:
-    driver: overlay
-  database_network:
-    driver: overlay
+# networks:
+#   nginx_network:
+#     driver: overlay
+#   database_network:
+#     driver: overlay
 
 
 volumes:
