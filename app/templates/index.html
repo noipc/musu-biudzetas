@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<main id="app">
+    <router-view></router-view>
+</main>
 
-<h2>Puslapis ruošiamas</h2>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+<script src="{% static 'js/app.js' %}"></script>
 
 {% endblock %}

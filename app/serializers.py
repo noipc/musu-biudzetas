@@ -5,17 +5,24 @@ from .models import Region, Municipality, Entity, Budget, Program
 class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
-        fields = '__all__'
+        fields = ['id', 'name', 'slug']
 
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Municipality
-        fields = '__all__'
+        fields = ['id', 'name', 'slug']
 
-class EntitySerializer(serializers.ModelSerializer):
+
+class RegionsAndMunicipalitiesSerializer(serializers.ModelSerializer):
+
+    municipalities = MunicipalitySerializer(many=True)
+
     class Meta:
-        model = Entity
-        fields = '__all__'
+        model = Region
+        fields = ['id', 'name', 'municipalities']
+
+
+
 
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +33,19 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
         fields = '__all__'
+
+class EntitySerializer(serializers.ModelSerializer):
+
+    budgets = BudgetSerializer(many=True)
+
+    class Meta:
+        model = Entity
+        fields = ['id', 'legal_id', 'name', 'slug', 'entity_type_id', 'entity_cat_id', 'budgets']
+
+
+class MunicipalityAndEntitiesSerializer(serializers.ModelSerializer):
+    entities = EntitySerializer(many=True)
+
+    class Meta:
+        model = Municipality
+        fields = ['id', 'name', 'slug', 'entities']

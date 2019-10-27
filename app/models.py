@@ -91,7 +91,7 @@ class Municipality(CommonModel):
     name = models.CharField(max_length=300, unique=True, verbose_name=_("Savivaldybė"))
     slug = models.SlugField(unique=True)
     short_name = models.CharField(max_length=150, blank=True, null=True, verbose_name=_("Savivaldybės sutrumpintas pavadinimas"))
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name=_("Apskritis"))
+    region = models.ForeignKey(Region, related_name='municipalities', on_delete=models.CASCADE, verbose_name=_("Apskritis"))
     child_pop = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Gyentojų skaičius nuo 0 iki 15 metų"))
     adult_pop = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Gyventojų skaičius nuo 15 iki 65 metų"))
     senior_pop = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Gyventojų skaičius nuo 65 metų"))
@@ -151,7 +151,7 @@ class Entity(CommonModel):
     entity_cat = models.ForeignKey(EntitySector, on_delete=models.CASCADE, verbose_name=_("Juridinio asmens sektorius"))
     pub_sector = models.ForeignKey(PublicSector, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Viešosios politikos sritis"))
     pub_subsector = models.IntegerField(choices=PUB_SUB_SECTORS, null=True, blank=True, verbose_name=_("Viešosios politikos srities kategorija"), help_text=_("Vaikai, Jaunimas, Senjorai"))
-    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, verbose_name=_("Savivaldybė"))
+    municipality = models.ForeignKey(Municipality, related_name='entities', on_delete=models.CASCADE, verbose_name=_("Savivaldybė"))
     status = models.IntegerField(choices=ENTITY_STATUS, default=1, verbose_name=_("Juridinio asmens statusas"))
     start_date = models.DateField(null=True, blank=True, verbose_name=_("Juridinio asmens įkūrimo data"))
     end_date = models.DateField(null=True, blank=True, verbose_name=_("Juridinio asmens likvidavimo data"))
@@ -189,8 +189,8 @@ class Budget(CommonModel):
     )
     b_source = models.IntegerField(choices=BUDGET_SOURCE, default=1, verbose_name=_("Finansavimo šaltinis"))
     b_type = models.IntegerField(choices=BUDGET_TYPE, default = 1, verbose_name=_("Biudžeto tipas"))
-    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, blank=True, to_field='legal_id', verbose_name=_("Juridinis asmuo"))
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Programa"))
+    entity = models.ForeignKey(Entity, related_name='budgets', on_delete=models.CASCADE, null=True, blank=True, to_field='legal_id', verbose_name=_("Juridinis asmuo"))
+    program = models.ForeignKey(Program, related_name='budgets', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Programa"))
     amount = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Suma, EUR"))
     year = models.IntegerField(default=2015, verbose_name=_("Metai"))
 
@@ -210,6 +210,10 @@ class Budget(CommonModel):
 #custom User model
 class User(AbstractUser):
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, verbose_name=_("Darbovietė"))
+
+    # def create_user(self, email, password, is_staff):
+        # pass
+
     def save(self, *args, **kwargs):
         self.username = self.email
         super().save(*args, **kwargs)
