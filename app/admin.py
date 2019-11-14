@@ -1,14 +1,36 @@
 import csv
 import io
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserCreationForm
 from .models import User, Entity, Budget, Program, Region, Municipality, PublicSector, EntitySector, EntityType
 from .forms import CsvUploadForm
 from django.urls import path
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext_lazy as _
 
 # Register your models here.
 
 admin.site.site_header = "Mūsų Biudžetas - administracija"
+
+class UserCreateForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password' )
+
+
+class UserAdmin(UserAdmin):
+    add_form = UserCreateForm
+    add_fieldsets = (
+    (None, {'fields': ('username', 'password')}),
+    (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'entity')}),
+    (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+    (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+
+
+admin.site.register(User, UserAdmin)
 
 class BudgetInline(admin.TabularInline):
     model = Budget
@@ -266,10 +288,11 @@ class BudgetAdmin(CommonAdminModel):
             for col in csv.reader(io_string, delimiter=';', quotechar='"'):
                 _, created = Budget.objects.update_or_create(
                     entity_id = col[0],
-                    amount = col[1],
-                    year = col[2],
-                    b_source = col[3],
-                    b_type = col[4],
+                    program_id = col[1],
+                    amount = col[2],
+                    year = col[3],
+                    b_source = col[4],
+                    b_type = col[5],
                     created_by_id = 1,
                 )
             self.message_user(request, "Your csv file has been imported")
