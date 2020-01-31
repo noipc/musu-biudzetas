@@ -12,7 +12,7 @@ class AboutPageView(View):
 
 class MunicipalitiesListView(ListView):
     context_object_name = 'municipalities'
-    queryset = Municipality.objects.select_related('region').order_by('region__name')
+    queryset = Municipality.objects.all()
     template_name = 'municipalities.html'
 
 class SeimasPageView(View):

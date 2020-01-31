@@ -27,12 +27,11 @@
     <div class="content-container">
         <div class="mobile-container">
             <ul class="nested-list">
-                {% regroup municipalities by region as municipalities_by_region %}
-                {% for region, municipalities in municipalities_by_region %}
+                <!-- {% for municipality in municipalities %}
                     <li class="nested-list-item">
                         <input type="checkbox" id="{{region.slug}}-state" class="nested-list-state-checkbox"/>
-                        <label for="{{region.slug}}-state">
-                            <h3>{{region.name}}</h3>
+                        <label for="{{municipality.region}}-state">
+                            <h3>{{municipality.region.get_user_choices_display}}</h3>
                         </label>
                         <ul>
                             {% for municipality in municipalities %}
@@ -40,7 +39,7 @@
                             {% endfor %}
                         </ul>
                     </li>
-                {% endfor %}
+                {% endfor %} -->
             </ul>
         </div>
 
