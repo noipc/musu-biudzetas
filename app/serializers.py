@@ -22,8 +22,6 @@ class RegionsAndMunicipalitiesSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'municipalities']
 
 
-
-
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget

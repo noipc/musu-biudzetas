@@ -7,17 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mūsų Biudžetas</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"> 
 </head>
 <body>
     <header>
+        <h1 class="sr-only">Mūsų Biudžetas</h1>
+        <input type="checkbox" id="menustate" class="menustate-checkbox" aria-hidden="true">
         <nav>
-            <ul>
-                <li><a href ='{% url "about" %}'>Apie projektą</a></li>
-                <li><a href ='{% url "index" %}'><h1>Mūsų Biudžetas</h1></a></li>
-                <li><a href ='/admin'>Prisijungti</a></li>
+            <ul class="mob-header">
+                <li class="mob-link-logo">
+                    <a href='{% url "index" %}'>Mūsų Biudžetas</a>
+                </li>
+                <li>
+                   <label class="menu-icon-label" for="menustate" aria-hidden="true">
+                        <span class="menu-icon-bread menu-icon-bread-top">
+                            <span class="menu-icon-bread-crust menu-icon-crust-top"></span>
+                        </span>
+                        <span class="menu-icon-bread menu-icon-bread-bottom">
+                            <span class="menu-icon-bread-crust menu-icon-crust-bottom"></span>
+                        </span>
+                   </label> 
+                </li>
             </ul>
+            <div class="nav-content">
+                <ul class="lg-nav">
+                    <li class="link-logo"><a href ='{% url "index" %}'>Mūsų Biudžetas</a></li>
+                    <li><a href ='{% url "municipalities" %}'>Savivaldybės</a></li>
+                    <li><a href ='{% url "seimas" %}'>Seimas</a></li>
+                    <li><a href ='{% url "gov" %}'>Vyriausybė</a></li>
+                    <li><a href ='{% url "president" %}'>Prezidentūra</a></li>
+                    <li><a href ='/admin'>Prisijungti</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
 
